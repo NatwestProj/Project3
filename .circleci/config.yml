@@ -83,7 +83,7 @@ jobs:
           command: |
             cd frontend
             npm install oauth-sign@^0.9.0
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical --force
 
   scan-backend:
     docker:
@@ -99,7 +99,7 @@ jobs:
           name: Analyze backend.
           command: |
             cd backend
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical --force
 
 workflows:
   default:
