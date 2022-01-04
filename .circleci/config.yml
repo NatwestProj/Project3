@@ -254,7 +254,6 @@ jobs:
             fi
             echo Key: migrations-${CIRCLE_WORKFLOW_ID:0:7}
             
-     
 workflows:
   default:
     jobs:
