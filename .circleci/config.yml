@@ -153,10 +153,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:project,Values=udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text >> .circleci/ansible/inventory.txt
-              --data `aws ec2 describe-instances `
-                --query 'Reservations[*].Instances[*].PublicIpAddress' \
-                --filters "Name=tag:project,Values=udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
-                --output text` \
+              --output text` \
               https:/kvdb.io/GSRrQJrNKcHQh3tpH4GTJG/hosts-deployed-${CIRCLE_WORKFLOW_ID:0:7} -d "success" -k
               echo URL: https:/kvdb.io/GSRrQJrNKcHQh3tpH4GTJG/hosts-deployed-${CIRCLE_WORKFLOW_ID:0:7
               
