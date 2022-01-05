@@ -320,28 +320,31 @@ jobs:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"    
           
   deploy-backend:
-    docker:
-      # Docker image here that supports 
-      
-      - image: python:3.7-alpine3.11
+     docker:
+      # Docker image here that supports AWS CLI
+      - image: circleci/python:3.8.2
     steps:
       # Checkout code from git
       - checkout
       # Add ssh keys with fingerprint
       - add_ssh_keys:
           fingerprints: ["e6:26:81:ee:ad:55:14:27:04:ae:35:a2:5b:9d:03:5b"]
-      # attach workspace
+      # attach workspace 
       - attach_workspace:
           at: ~/project
-          
       - run:
           name: Install dependencies
           command: |
             # your code here
-            sudo apt-get update
-            sudo apt-get install tar gzip ansible nodejs npm
+            sudo apt-get --allow-releaseinfo-change update
+            sudo apt-get install tar
+            sudo apt-get install gzip
+            sudo apt-get install ansible
+            sudo apt-get install nodejs
+            sudo apt-get install npm
+            
             pip install awscli
-                    
+                       
       - run:
           name: Deploy backend
           command: |
