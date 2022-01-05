@@ -352,7 +352,6 @@ jobs:
             cd backend
             npm i
             npm run build
-            cp node_modules dist
             echo ENVIRONMENT=development > dist/.env
             echo TYPEORM_CONNECTION=postgres >> dist/.env
             echo TYPEORM_ENTITIES=./modules/domain/**/*.entity.js >> dist/.env
