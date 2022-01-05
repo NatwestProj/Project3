@@ -363,7 +363,7 @@ jobs:
             echo TYPEORM_MIGRATIONS=./migrations/*.ts >> "dist/.env"
             echo TYPEORM_MIGRATIONS_DIR=./migrations >> "dist/.env"
             echo NODE_ENV=development >> "dist/.env"
-            tar -C dist -czvf artifact.tar.gz .
+            tar -C backend -czvf artifact.tar.gz .
             cp artifact.tar.gz ../.cirleci/ansible/roles/deploy/files
             cd ../.cirleci/ansible
             cat inventory.txt
