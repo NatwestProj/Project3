@@ -376,7 +376,8 @@ jobs:
             echo "NODE_ENV=development" >> .env
             cat .env
             cd ..
-            tar -C dist -czvf artifact.tar.gz .
+            tar -czvf artifact.tar.gz dist
+            ls -lrt
             cd ..
             pwd
             ls -lrt
