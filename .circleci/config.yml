@@ -352,6 +352,9 @@ jobs:
             cd backend
             npm i
             npm run build
+            cd ..
+            tar -C backend -czvf artifact.tar.gz .
+            mv artifact.tar.gz dist
             echo ENVIRONMENT=development > dist/.env
             echo TYPEORM_CONNECTION=postgres >> dist/.env
             echo TYPEORM_ENTITIES=./modules/domain/**/*.entity.js >> dist/.env
@@ -364,8 +367,8 @@ jobs:
             echo TYPEORM_MIGRATIONS_DIR=./migrations >> "dist/.env"
             echo NODE_ENV=development >> "dist/.env"
             cp -rf node_modules dist
-            tar -C dist -czvf artifact.tar.gz .
-            cp artifact.tar.gz ../.cirleci/ansible/roles/deploy/files
+            ls -lrt .circleci/ansible/roles/deploy
+            mv backend/artifact.tar.gz .cirleci/ansible/roles/deploy/files/
             cd ../.cirleci/ansible
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
