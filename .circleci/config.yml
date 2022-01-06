@@ -352,7 +352,6 @@ jobs:
             cd backend
             npm i
             npm run build
-            cd ..
             cp -rf node_modules dist
             cd dist
             echo "ENVIRONMENT=development" > .env
