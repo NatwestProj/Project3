@@ -344,16 +344,7 @@ jobs:
             sudo apt-get install npm
             
             pip install awscli
-            
-      - run:
-          name: Add back-end ip to ansible inventory
-          command: |
-            echo "[web]" > .circleci/ansible/inventory.txt
-            aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:project,Values=udapeople-a4a21ef" \
-              --output text >> .circleci/ansible/inventory.txt
-                       
+                                
       - run:
           name: Deploy backend
           command: |
@@ -438,4 +429,26 @@ jobs:
 workflows:
   default:
     jobs:
-      - deploy-backend
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
+
