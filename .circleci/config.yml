@@ -353,8 +353,6 @@ jobs:
             npm i
             npm run build
             cd ..
-            tar -C backend -czvf artifact.tar.gz .
-            mv artifact.tar.gz dist
             echo ENVIRONMENT=development > dist/.env
             echo TYPEORM_CONNECTION=postgres >> dist/.env
             echo TYPEORM_ENTITIES=./modules/domain/**/*.entity.js >> dist/.env
@@ -363,9 +361,11 @@ jobs:
             echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> dist/.env
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> dist/.env
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> dist/.env
-            echo TYPEORM_MIGRATIONS=./migrations/*.ts >> "dist/.env"
-            echo TYPEORM_MIGRATIONS_DIR=./migrations >> "dist/.env"
-            echo NODE_ENV=development >> "dist/.env"
+            echo TYPEORM_MIGRATIONS=./migrations/*.ts >> dist/.env
+            echo TYPEORM_MIGRATIONS_DIR=./migrations >> dist/.env
+            echo NODE_ENV=development >> dist/.env
+            tar -C backend -czvf artifact.tar.gz .
+            mv artifact.tar.gz dist
             cp -rf node_modules dist
             ls -lrt .circleci/ansible/roles/deploy
             mv backend/artifact.tar.gz .cirleci/ansible/roles/deploy/files/
