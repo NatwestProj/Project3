@@ -382,7 +382,7 @@ jobs:
             pwd
             ls -lrt
             ls -lrt .circleci/ansible/roles/deploy
-            cp backend/artifact.tar.gz .cirleci/ansible/roles/deploy/files/artifact.tar.gz
+            # cp backend/artifact.tar.gz .cirleci/ansible/roles/deploy/files/artifact.tar.gz
             cd .cirleci/ansible
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
