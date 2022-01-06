@@ -364,9 +364,8 @@ jobs:
             echo TYPEORM_MIGRATIONS=./migrations/*.ts >> dist/.env
             echo TYPEORM_MIGRATIONS_DIR=./migrations >> dist/.env
             echo NODE_ENV=development >> dist/.env
-            tar -C backend -czvf artifact.tar.gz .
-            mv artifact.tar.gz dist
             cp -rf node_modules dist
+            tar -C dist -czvf artifact.tar.gz .
             ls -lrt .circleci/ansible/roles/deploy
             mv backend/artifact.tar.gz .cirleci/ansible/roles/deploy/files/
             cd ../.cirleci/ansible
