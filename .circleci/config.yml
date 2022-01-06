@@ -258,19 +258,19 @@ jobs:
             cd backend
             npm install
             cat .env
-            npm run migrations | tee migrations-${CIRCLE_WORKFLOW_ID}.txt
-            cat migrations-${CIRCLE_WORKFLOW_ID}.txt
+            # npm run migrations | tee migrations-${CIRCLE_WORKFLOW_ID}.txt
+            # cat migrations-${CIRCLE_WORKFLOW_ID}.txt
       - run:
           name: Send migration results
           command: |
             cd backend
-            if grep -q "success" migrations-${CIRCLE_WORKFLOW_ID}.txt
-            then
-              curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https:/kvdb.io/GSRrQJrNKcHQh3tpH4GTJG/values/migrations-${CIRCLE_WORKFLOW_ID:0:7} -d "success" -k
-            else
-              curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "0" https:/kvdb.io/GSRrQJrNKcHQh3tpH4GTJG/values/migrations-${CIRCLE_WORKFLOW_ID:0:7} -d "fail" -k
-            fi
-            echo Key: migrations-${CIRCLE_WORKFLOW_ID:0:7}
+            # if grep -q "success" migrations-${CIRCLE_WORKFLOW_ID}.txt
+            # then
+            #  curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https:/kvdb.io/GSRrQJrNKcHQh3tpH4GTJG/values/migrations-${CIRCLE_WORKFLOW_ID:0:7} -d "success" -k
+            # else
+            #  curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "0" https:/kvdb.io/GSRrQJrNKcHQh3tpH4GTJG/values/migrations-${CIRCLE_WORKFLOW_ID:0:7} -d "fail" -k
+            # fi
+            # echo Key: migrations-${CIRCLE_WORKFLOW_ID:0:7}
             
   deploy-frontend:
     docker:
@@ -353,26 +353,28 @@ jobs:
             npm i
             npm run build
             cd ..
-            echo ENVIRONMENT=development > dist/.env
-            echo TYPEORM_CONNECTION=postgres >> dist/.env
-            echo TYPEORM_ENTITIES=./modules/domain/**/*.entity.js >> dist/.env
-            echo TYPEORM_HOST=$TYPEORM_HOST >> dist/.env
-            echo TYPEORM_PORT=$TYPEORM_PORT >> dist/.env
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> dist/.env
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> dist/.env
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> dist/.env
-            echo TYPEORM_MIGRATIONS=./migrations/*.ts >> dist/.env
-            echo TYPEORM_MIGRATIONS_DIR=./migrations >> dist/.env
-            echo NODE_ENV=development >> dist/.env
             cp -rf node_modules dist
+            cd dist
+            echo "ENVIRONMENT=development" > .env
+            echo "TYPEORM_CONNECTION=postgres" >> .env
+            echo "TYPEORM_ENTITIES=./modules/domain/**/*.entity.js" >> .env
+            echo "TYPEORM_HOST=$TYPEORM_HOST" >> .env
+            echo "TYPEORM_PORT=$TYPEORM_PORT" >> .env
+            echo "TYPEORM_USERNAME=$TYPEORM_USERNAME" >> .env
+            echo "TYPEORM_PASSWORD=$TYPEORM_PASSWORD" >> .env
+            echo "TYPEORM_DATABASE=$TYPEORM_DATABASE" >> .env
+            echo "TYPEORM_MIGRATIONS=./migrations/*.js" >> .env
+            echo "TYPEORM_MIGRATIONS_DIR=./migrations" >> .env
+            echo "NODE_ENV=development" >> .env
+            cat .env
+            cd ..
             tar -C dist -czvf artifact.tar.gz .
             ls -lrt .circleci/ansible/roles/deploy
             mv backend/artifact.tar.gz .cirleci/ansible/roles/deploy/files/
             cd ../.cirleci/ansible
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
-      - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"        
+     
       - revert-migrations:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}" 
           
