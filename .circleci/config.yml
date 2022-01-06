@@ -345,7 +345,7 @@ jobs:
             
             pip install awscli
             
-       - run:
+      - run:
           name: Add back-end ip to ansible inventory
           command: |
             echo "[web]" > .circleci/ansible/inventory.txt
