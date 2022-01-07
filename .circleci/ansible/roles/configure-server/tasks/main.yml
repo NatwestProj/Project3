@@ -1,0 +1,14 @@
+---
+
+- name: "Install dependencies Nodejs NPM"
+    becomec: yes
+    apt: 
+      name: ["nodejs","npm"]
+      state: present
+      update_cache: yes
+      
+- name: "install pm2 globally"
+    becomec: yes
+    shell: |
+      cd/home/ubuntu/npm install pm2 -g
+  
