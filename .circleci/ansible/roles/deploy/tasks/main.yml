@@ -16,4 +16,4 @@
   shell: |
     cd dist
     echo `pwd` >> ansible-test.txt
-    pm2 start npm --name backend -- start
+    pm2 start main.js --name backend
