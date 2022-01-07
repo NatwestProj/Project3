@@ -2,7 +2,7 @@
 
 - name: "extract artifact."
   unarchive:
-    src: ../../backend/artifact.tar.gz
+    src: artifact.tar.gz
     dest: /home/ubuntu/
     owner: ununtu
     remote_src: no
