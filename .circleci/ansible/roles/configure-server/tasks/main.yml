@@ -9,6 +9,8 @@
       
 - name: "install pm2 globally"
   become: yes
-  shell: |
-    cd/home/ubuntu/npm install pm2 -g
-  
+  become_method: sudo
+  npm:
+    name: pm2
+    global: yes
+    state: present
