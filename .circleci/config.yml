@@ -224,6 +224,7 @@ jobs:
           command: |
             apk add --update tar gzip ansible nodejs npm curl
             pip install awscli
+            
       - run:
           name: Check there is .env file at workspace.
           command: cat backend/.env
@@ -374,12 +375,50 @@ jobs:
             ls -lrt
             ls -lrt .circleci/ansible/roles/deploy
             cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files/artifact.tar.gz
-            cd .circleci/ansible
-            cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml
-     
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .circleci/ansible/roles/deploy/files/artifact.tar.gz
+            # cd .circleci/ansible
+            # cat inventory.txt
+            # ansible-playbook -i inventory.txt deploy-backend.yml
       - revert-migrations:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}" 
+          
+  test-deployment:
+    docker:
+      # Docker image here that supports Ansible
+      - image: python:3.7-alpine3.11
+    steps:
+      # Checkout code from git
+      - checkout
+      # Add ssh keys with fingerprint
+      - add_ssh_keys:
+          fingerprints: ["56:0f:b5:9e:0b:f9:74:14:db:1b:9c:f9:23:a6:8f:b0"]
+      # attach workspace
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Install ansible.
+          command: |
+            apk add --update ansible
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update tar gzip ansible nodejs npm curl
+            pip install awscli
+            
+      - run:
+          name: Check there is .env file at workspace.
+          command: cat backend/.env
+      - run:
+          name: Configure server with ansible
+          no_output_timeout: 30m
+          command: |
+            cd .circleci/ansible
+            echo "Inventory content"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
           
   smoke-test:
     docker:
@@ -505,6 +544,8 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
+      - test-deployment:
+          requires: [deploy-backend]
       - smoke-test:
           requires: [deploy-frontend]
       - cloudfront-update:
