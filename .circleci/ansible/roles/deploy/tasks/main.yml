@@ -4,7 +4,7 @@
   unarchive:
     src: artifact.tar.gz
     dest: /home/ubuntu/
-    owner: ununtu
+    owner: ubuntu
     remote_src: no
 
 - name: "stop app."
