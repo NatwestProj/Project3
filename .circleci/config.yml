@@ -345,18 +345,10 @@ jobs:
             sudo apt-get install npm
             
             pip install awscli
-                                
+            
       - run:
-          name: Deploy backend
+          name: Add .env vars to dist
           command: |
-            # your code here
-            cd backend
-            npm i
-            npm run build
-            cp -rf node_modules dist
-            cd ..
-            pwd
-            cd dist
             echo "ENVIRONMENT=development" > dist/.env
             echo "TYPEORM_CONNECTION=postgres" >> dist/.env
             echo "TYPEORM_ENTITIES=./modules/domain/**/*.entity.js" >> dist/.env
@@ -368,8 +360,17 @@ jobs:
             echo "TYPEORM_MIGRATIONS=./migrations/*.js" >> dist/.env
             echo "TYPEORM_MIGRATIONS_DIR=./migrations" >> dist/.env
             echo "NODE_ENV=development" >> dist/.env
-            pwd
-            cat .env
+            cat  dist/.env
+                                
+      - run:
+          name: Deploy backend
+          command: |
+            # your code here
+            cd backend
+            npm i
+            npm run build
+            cp -rf node_modules dist
+            cd dist
             cd ..
             tar -czvf artifact.tar.gz dist
             ls -lrt
