@@ -355,9 +355,6 @@ jobs:
             npm run build
             cp -rf node_modules dist
             cd dist
-            cat backend/.env            
-            cp backend/.env dist/.env
-            cat dist/.env
             cd ..
             tar -czvf artifact.tar.gz dist
             ls -lrt
