@@ -345,14 +345,7 @@ jobs:
             sudo apt-get install npm
             
             pip install awscli
-            
-      - run:
-          name: Check there is .env file at workspace.
-          command: |
-            cat backend/.env            
-            cp backend/.env dist/.env
-            cat dist/.env
-            
+                       
       - run:
           name: Deploy backend
           command: |
@@ -362,6 +355,9 @@ jobs:
             npm run build
             cp -rf node_modules dist
             cd dist
+            cat backend/.env            
+            cp backend/.env dist/.env
+            cat dist/.env
             cd ..
             tar -czvf artifact.tar.gz dist
             ls -lrt
