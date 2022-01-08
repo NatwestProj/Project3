@@ -354,18 +354,21 @@ jobs:
             npm i
             npm run build
             cp -rf node_modules dist
+            cd ..
+            pwd
             cd dist
-            echo "ENVIRONMENT=development" > .env
-            echo "TYPEORM_CONNECTION=postgres" >> .env
-            echo "TYPEORM_ENTITIES=./modules/domain/**/*.entity.js" >> .env
-            echo "TYPEORM_HOST=$TYPEORM_HOST" >> .env
-            echo "TYPEORM_PORT=$TYPEORM_PORT" >> .env
-            echo "TYPEORM_USERNAME=$TYPEORM_USERNAME" >> .env
-            echo "TYPEORM_PASSWORD=$TYPEORM_PASSWORD" >> .env
-            echo "TYPEORM_DATABASE=$TYPEORM_DATABASE" >> .env
-            echo "TYPEORM_MIGRATIONS=./migrations/*.js" >> .env
-            echo "TYPEORM_MIGRATIONS_DIR=./migrations" >> .env
-            echo "NODE_ENV=development" >> .env
+            echo "ENVIRONMENT=development" > dist/.env
+            echo "TYPEORM_CONNECTION=postgres" >> dist/.env
+            echo "TYPEORM_ENTITIES=./modules/domain/**/*.entity.js" >> dist/.env
+            echo "TYPEORM_HOST=$TYPEORM_HOST" >> dist/.env
+            echo "TYPEORM_PORT=$TYPEORM_PORT" >> dist/.env
+            echo "TYPEORM_USERNAME=$TYPEORM_USERNAME" >> dist/.env
+            echo "TYPEORM_PASSWORD=$TYPEORM_PASSWORD" >> dist/.env
+            echo "TYPEORM_DATABASE=$TYPEORM_DATABASE" >> dist/.env
+            echo "TYPEORM_MIGRATIONS=./migrations/*.js" >> dist/.env
+            echo "TYPEORM_MIGRATIONS_DIR=./migrations" >> dist/.env
+            echo "NODE_ENV=development" >> dist/.env
+            pwd
             cat .env
             cd ..
             tar -czvf artifact.tar.gz dist
