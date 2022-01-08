@@ -22,6 +22,6 @@
     export TYPEORM_PORT="5432"
     export TYPEORM_USERNAME="glee"
     export TYPEORM_PASSWORD="glee"
-    export TYPEORM_DATABASE="glee"
+    export TYPEORM_DATABASE="postgres"
     cd dist
     pm2 start main.js --name backend
